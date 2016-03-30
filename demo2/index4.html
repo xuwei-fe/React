@@ -9,7 +9,7 @@
     <script src="../react-0.13.0/build/JSXTransformer.js"></script>
     <!--jquery-->
     <script src="../react-0.13.0/build/jquery.min.js"></script>
-
+    <!--组件样式-->
     <link type="text/css" rel="stylesheet" href="css/index4.css"/>
 </head>
 <body>
@@ -17,14 +17,25 @@
 <script type="text/jsx">
     //组件定义
     var EzLoginComp = React.createClass({
+        getInitialState : function(){
+          return {
+              checked:true
+          }
+        },
         //点击登录时调用的方法
         auth : function(event){
             //获取表单的值
             var account = React.findDOMNode(this.refs.account).value,
                 pass = React.findDOMNode(this.refs.password).value,
-                isPassword = React.findDOMNode(this.refs.isPassword).checked,
+                //isPassword = React.findDOMNode(this.refs.isPassword).checked,
+                isPassword = this.state.checked,
                 selectValue = React.findDOMNode(this.refs.select).value;
             alert([selectValue,account,pass,isPassword]);
+        },
+        checkboxChange : function(event){
+            this.setState({
+                checked:event.target.checked
+            });
         },
         render : function(){
             //通过defaultValue设置默认选中的值
@@ -49,8 +60,8 @@
                             <input type="text" ref="password"/>
                         </div>
                         <div className="row remember">
-                            <input type="checkbox" id="checkbox" ref="isPassword" defaultChecked/>
-                            <label for="checkbox">记住密码</label>
+                            <input type="checkbox" id="checkbox" ref="isPassword" onChange={this.checkboxChange} defaultChecked={this.state.checked}/>
+                            <label for="checkbox" htmlFor="checkbox">记住密码</label>
                         </div>
                         <div className="row button">
                             <button onClick={this.auth}>登录</button>
